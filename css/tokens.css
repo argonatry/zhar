@@ -1,0 +1,56 @@
+/* Дизайн-токены. Цвета и шрифты задаются только здесь. */
+:root {
+  /* Палитра: остывший уголь → раскалённый жар */
+  --coal: #140e0b;    /* уголь — основной фон */
+  --soot: #221915;    /* сажа — фон меню, плашки */
+  --ash: #e9dfd2;     /* пепел — текст */
+  --smoke: #a0958a;   /* дым — вторичный текст */
+  --zhar: #ff4b1f;    /* жар — акцент, кнопки, секция брони */
+  --flame: #ffb23e;   /* пламя — ядро свечения, hover */
+
+  /* Роли по умолчанию (тёмная тема) */
+  --bg: var(--coal);
+  --fg: var(--ash);
+  --muted: var(--smoke);
+  --rule: rgb(233 223 210 / 0.16);
+  --accent: var(--zhar);
+
+  /* Шрифты */
+  --font-display: "Dela Gothic One", "Arial Black", Impact, sans-serif;
+  --font-text: "Onest", "Segoe UI", Roboto, Arial, sans-serif;
+
+  /* Шкала размеров */
+  --fs-small: 0.875rem;
+  --fs-body: clamp(1rem, 0.95rem + 0.25vw, 1.1875rem);
+  --fs-lead: clamp(1.25rem, 1.05rem + 0.9vw, 1.875rem);
+  --fs-h3: clamp(1.375rem, 1.1rem + 1.2vw, 2.25rem);
+  --fs-h2: clamp(1.875rem, 1rem + 4.4vw, 5.25rem);
+  --fs-hero: min(29.5vw, 44svh);
+
+  /* Отступы */
+  --s-1: 0.5rem;
+  --s-2: 1rem;
+  --s-3: 1.5rem;
+  --s-4: 2.5rem;
+  --s-5: 4rem;
+  --s-6: clamp(4.5rem, 3rem + 6vw, 9.5rem);   /* вертикальный ритм секций */
+  --gutter: clamp(1.25rem, 0.5rem + 3.4vw, 4rem);
+  --wrap: 90rem;
+
+  /* Движение: медленно и тяжело, как тепло */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* Раскалённая секция (бронь): тёмный текст на жаре */
+.theme-zhar {
+  --bg: var(--zhar);
+  --fg: var(--coal);
+  --muted: rgb(20 14 11 / 0.78);
+  --rule: rgb(20 14 11 / 0.3);
+  --accent: var(--coal);
+}
+
+.theme-soot {
+  --bg: var(--soot);
+}

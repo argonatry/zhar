@@ -1,0 +1,436 @@
+/* Стили секций — в том же порядке, что в index.html */
+
+/* ============ ПЕРВЫЙ ЭКРАН ============ */
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100svh;
+  background: var(--coal);
+  overflow: hidden;
+}
+
+.hero__sparks {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  display: none;
+}
+.hero__sparks.is-on { display: block; }
+
+.hero__bar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding-block: 1.25rem;
+  font-size: var(--fs-small);
+  font-weight: 500;
+}
+.hero__nav { display: none; gap: var(--s-4); }
+.hero__hours { color: var(--muted); }
+
+.hero__center {
+  position: relative;
+  flex: 1;
+  display: grid;
+  place-items: center;
+  min-height: 0;
+}
+
+/* Свечение за словом. Обёртку двигает GSAP, «дыхание» — на псевдоэлементе */
+.hero__glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: -1;
+  width: 150vw;
+  max-width: 120rem;
+  aspect-ratio: 16 / 9;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.hero__glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(closest-side, rgb(255 75 31 / 0.42), rgb(255 75 31 / 0.14) 48%, rgb(255 75 31 / 0) 72%);
+  animation: breathe 4.5s ease-in-out infinite alternate;
+}
+.reduced .hero__glow::before { animation: none; }
+@keyframes breathe {
+  from { opacity: 0.5; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1.04); }
+}
+
+/* Слово «ЖАР»: снизу холодный уголь (::before), сверху буквы-«окно» в тлеющие угли */
+.hero__word {
+  position: relative;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-hero);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: #33241c;
+  user-select: none;
+}
+.hero__word::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+}
+.hero__hot {
+  position: relative;
+  display: block;
+  background: var(--zhar) url("../assets/img/embers.webp") center / cover no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero__foot {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: var(--s-3);
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+}
+.hero__tag { max-width: 24em; text-wrap: balance; }
+.hero__actions {
+  display: grid;
+  gap: var(--s-2);
+  justify-items: center;
+}
+.hero__actions .btn { width: 100%; }
+.hero__menu-link { font-weight: 500; }
+
+/* До старта интро прячем только то, что интро покажет (и только при включённых анимациях) */
+.js:not(.reduced):not(.is-ready) .hero__hot { clip-path: inset(100% 0% 0% 0%); }
+.js:not(.reduced):not(.is-ready) .hero__glow,
+.js:not(.reduced):not(.is-ready) .hero__bar,
+.js:not(.reduced):not(.is-ready) .hero__foot { opacity: 0; }
+
+@media (min-width: 900px) {
+  .hero__bar { padding-block: 1.75rem; }
+  .hero__nav { display: flex; }
+  .hero__foot {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    padding-bottom: 2.5rem;
+  }
+  .hero__actions {
+    grid-auto-flow: column;
+    align-items: center;
+    gap: var(--s-4);
+  }
+  .hero__actions .btn { width: auto; }
+  .hero__menu-link { order: -1; }
+}
+
+/* ============ О РЕСТОРАНЕ ============ */
+.about__grid { display: grid; gap: var(--s-5); }
+.about__copy {
+  display: grid;
+  gap: var(--s-3);
+  margin-top: var(--s-4);
+  max-width: 36rem;
+}
+.about__copy p:not(.lead) { color: var(--muted); }
+
+.about__media { position: relative; padding-bottom: 18%; }
+.about__photo--big { aspect-ratio: 3 / 4; margin-left: 14%; }
+.about__photo--small {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 58%;
+  aspect-ratio: 3 / 2;
+  box-shadow: 0 0 0 0.5rem var(--coal);
+}
+
+@media (min-width: 900px) {
+  .about__grid {
+    grid-template-columns: 6fr 5fr;
+    gap: clamp(3rem, 7vw, 8rem);
+    align-items: start;
+  }
+  .about__text { padding-top: var(--s-5); }
+  .about__copy { margin-top: var(--s-5); }
+}
+
+/* ============ МЕНЮ ============ */
+.menu__head {
+  display: grid;
+  gap: var(--s-2);
+  margin-bottom: var(--s-5);
+}
+.menu__visual { display: none; }
+.menu__cats { display: grid; gap: var(--s-5); }
+
+.cat__title { color: var(--zhar); margin-bottom: var(--s-2); }
+
+.dish {
+  padding-block: 1.05rem;
+  border-top: 1px solid var(--rule);
+  transition: transform 0.6s var(--ease-out);
+}
+.dish:last-child { border-bottom: 1px solid var(--rule); }
+.dish__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+.dish__name { font-size: 1.125em; font-weight: 600; line-height: 1.3; }
+.dish__price {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: 1em;
+  transition: color 0.4s var(--ease-out);
+}
+.dish__desc { margin-top: 0.2rem; color: var(--muted); font-size: 0.95em; max-width: 34em; }
+
+@media (hover: hover) and (pointer: fine) {
+  .dish:hover { transform: translateX(0.75rem); }
+  .dish:hover .dish__price { color: var(--flame); }
+}
+
+@media (min-width: 900px) {
+  .menu__head {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+  }
+  .menu__grid {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: clamp(3rem, 6vw, 7rem);
+    align-items: start;
+  }
+  .menu__visual {
+    display: block;
+    position: sticky;
+    top: 12vh;
+  }
+  .menu__frame { aspect-ratio: 4 / 5; max-height: 76vh; width: 100%; }
+  .menu__frame img {
+    position: absolute;
+    inset: 0;
+    clip-path: inset(100% 0% 0% 0%);
+  }
+  /* Активное фото «поднимается» шторкой поверх предыдущего */
+  .menu__frame img.is-prev { clip-path: inset(0% 0% 0% 0%); z-index: 1; }
+  .menu__frame img.is-active {
+    clip-path: inset(0% 0% 0% 0%);
+    z-index: 2;
+    transition: clip-path 1.1s var(--ease-in-out);
+  }
+  .reduced .menu__frame img.is-active { transition: none; }
+  .menu__cats { gap: var(--s-6); }
+}
+
+/* ============ ГАЛЕРЕЯ ============ */
+.gallery { --shot-h: 58vw; overflow: hidden; }
+.gallery__head { margin-bottom: var(--s-4); }
+
+/* По умолчанию (телефон, без JS, reduced) — лента со свайпом */
+.gallery__track {
+  display: flex;
+  gap: 0.75rem;
+  padding-inline: var(--gutter);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.gallery__track::-webkit-scrollbar { display: none; }
+
+.shot { flex: none; scroll-snap-align: start; }
+.shot__frame { height: var(--shot-h); }
+.shot--wide .shot__frame { aspect-ratio: 3 / 2; }
+.shot--tall .shot__frame { aspect-ratio: 8 / 11; }
+
+@media (min-width: 600px) {
+  .gallery { --shot-h: min(46vw, 30rem); }
+}
+
+/* Десктоп с анимациями: секция закрепляется, лента едет горизонтально (класс вешает JS) */
+.gallery.is-horizontal {
+  --shot-h: min(58vh, 36rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  padding-block: var(--s-5);
+}
+.gallery.is-horizontal .gallery__track {
+  width: max-content;
+  overflow: visible;
+  gap: clamp(1rem, 2vw, 2rem);
+  scroll-snap-type: none;
+  padding-right: 12vw;
+  will-change: transform;
+}
+.gallery.is-horizontal .shot:nth-child(even) { margin-top: 7vh; }
+
+/* ============ БРОНЬ ============ */
+.booking { overflow: hidden; }
+.booking__grid { display: grid; gap: var(--s-5); }
+.booking__intro { display: grid; gap: var(--s-3); align-content: start; }
+.booking__intro .lead { max-width: 22em; font-weight: 500; }
+.booking__phone { font-weight: 500; }
+
+/* Угольная шторка, которая «сгорает» снизу вверх. Создаётся из JS */
+.booking__curtain {
+  position: absolute;
+  inset: -1px 0;
+  z-index: 5;
+  background: var(--coal);
+  pointer-events: none;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-3) var(--s-3);
+  color-scheme: light;
+}
+.field { grid-column: 1 / -1; display: grid; gap: 0.3rem; min-width: 0; }
+.field--half { grid-column: span 1; }
+.field label { font-size: var(--fs-small); font-weight: 600; }
+.field input,
+.field select {
+  width: 100%;
+  min-width: 0;
+  min-height: 3.25rem;
+  padding: 0.5rem 0;
+  border: 0;
+  border-bottom: 2px solid var(--coal);
+  border-radius: 0;
+  background: transparent;
+  color: var(--coal);
+  font-size: 1.1875rem;
+  font-weight: 500;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.field input::placeholder { color: rgb(20 14 11 / 0.55); }
+.field select {
+  padding-right: 1.75rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23140e0b' stroke-width='2'/%3E%3C/svg%3E") right 0.25rem center / 0.75rem no-repeat;
+  cursor: pointer;
+}
+.field select option { background: #fff; color: #140e0b; }
+.field input:focus-visible,
+.field select:focus-visible {
+  outline: 0;
+  border-bottom-width: 4px;
+  padding-bottom: calc(0.5rem - 2px);
+}
+.field__error {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  background: var(--coal);
+  color: var(--ash);
+  padding: 0.25rem 0.5rem;
+  justify-self: start;
+}
+.form .btn { grid-column: 1 / -1; margin-top: var(--s-2); }
+.form__note { grid-column: 1 / -1; color: var(--muted); }
+
+.booking__done { display: grid; gap: var(--s-3); justify-items: start; align-content: start; }
+.booking__done:focus { outline: 0; }
+.booking__again {
+  border: 0;
+  cursor: pointer;
+  font-weight: 600;
+  color: inherit;
+}
+[hidden] { display: none !important; }
+
+@media (min-width: 900px) {
+  .booking__grid {
+    grid-template-columns: 6fr 5fr;
+    gap: clamp(3rem, 7vw, 8rem);
+    align-items: start;
+  }
+}
+
+/* ============ КОНТАКТЫ ============ */
+.contacts__grid { display: grid; gap: var(--s-5); }
+.contacts__list { margin-top: var(--s-4); }
+.contacts__row {
+  display: grid;
+  gap: 0.15rem;
+  padding-block: 1.1rem;
+  border-top: 1px solid var(--rule);
+}
+.contacts__row:last-child { border-bottom: 1px solid var(--rule); }
+.contacts__row dt { font-size: var(--fs-small); color: var(--muted); }
+.contacts__row dd { font-size: var(--fs-lead); line-height: 1.35; }
+.contacts__row dd .muted { font-size: var(--fs-body); }
+.contacts__btn { margin-top: var(--s-4); }
+
+.contacts__map { display: grid; gap: var(--s-2); justify-items: start; align-content: start; }
+.contacts__map iframe {
+  width: 100%;
+  height: min(62svh, 32rem);
+  min-height: 18rem;
+  border: 0;
+  background: var(--soot);
+  /* Тёмная карта под общий тон */
+  filter: grayscale(1) invert(0.92) contrast(0.88) brightness(0.92);
+}
+/* Чтобы колесо мыши не «застревало» в карте: карта включается по клику */
+.js .contacts__map:not(.is-active) iframe { pointer-events: none; }
+
+@media (max-width: 899px) {
+  .contacts__btn { display: none; }   /* на телефоне есть закреплённая кнопка */
+}
+@media (min-width: 900px) {
+  .contacts__grid {
+    grid-template-columns: 5fr 7fr;
+    gap: clamp(3rem, 6vw, 7rem);
+    align-items: start;
+  }
+  .contacts__row { grid-template-columns: 8rem 1fr; align-items: baseline; }
+}
+
+/* ============ ФУТЕР ============ */
+.footer {
+  background: var(--coal);
+  padding-top: var(--s-5);
+  padding-bottom: calc(var(--s-4) + 5rem);   /* место под закреплённую кнопку на телефоне */
+  overflow: hidden;
+}
+.footer__inner { display: grid; gap: var(--s-3); }
+.footer__word {
+  font-family: var(--font-display);
+  font-size: var(--fs-hero);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  color: var(--soot);
+  white-space: nowrap;
+  text-align: center;
+  user-select: none;
+}
+.footer__meta { display: grid; gap: 0.35rem; }
+
+@media (min-width: 900px) {
+  .footer { padding-bottom: var(--s-4); }
+  .footer__meta {
+    grid-auto-flow: column;
+    justify-content: space-between;
+    gap: var(--s-4);
+  }
+}

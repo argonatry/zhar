@@ -1,0 +1,9 @@
+{
+  "name": "zhar",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "playwright": "^1.65.0"
+  }
+}
