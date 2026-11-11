@@ -1,6 +1,8 @@
 // Форма брони. Бэкенда нет: данные никуда не отправляются и не сохраняются,
 // после проверки показываем сообщение «Ми передзвонимо».
 
+import { initSelects } from './select.js';
+
 function todayIso() {
   const d = new Date();
   const p = (n) => String(n).padStart(2, '0');
@@ -23,6 +25,8 @@ export function initForm() {
   const form = document.getElementById('booking-form');
   const done = document.getElementById('booking-done');
   if (!form || !done) return;
+
+  initSelects();
 
   const name = form.elements.name;
   const phone = form.elements.phone;

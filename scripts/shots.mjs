@@ -79,6 +79,20 @@ for (const size of sizes) {
   const errorsShown = await page.evaluate(() => !document.getElementById('e-name').hidden && !document.getElementById('e-phone').hidden);
   if (!errorsShown) problems.push(`[${size.name}] форма: пустая отправка не показала ошибки`);
   await page.screenshot({ path: `${outDir}/${size.name}-form-errors.png` });
+  // Свои выпадающие списки: открыть время, снять кадр, выбрать 20:30
+  await page.click('#f-time-btn');
+  await page.waitForTimeout(1200);
+  const cut = await page.evaluate(() => document.getElementById('f-time-list').getBoundingClientRect().bottom - window.innerHeight);
+  if (cut > 1) problems.push(`[${size.name}] список времени уходит за экран на ${Math.round(cut)}px`);
+  await page.screenshot({ path: `${outDir}/${size.name}-select-time.png` });
+  await page.click('#f-time-list .select__option:text-is("20:30")');
+  await page.click('#f-guests-btn');
+  await page.waitForTimeout(600);
+  await page.screenshot({ path: `${outDir}/${size.name}-select-guests.png` });
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('Enter');
+  const picked = await page.evaluate(() => `${document.getElementById('f-time').value} / ${document.getElementById('f-guests').value}`);
+  if (picked !== '20:30 / 3') problems.push(`[${size.name}] списки: выбрано «${picked}», ожидалось «20:30 / 3»`);
   await page.fill('#f-name', 'Оксана');
   await page.fill('#f-phone', '+380 44 000 00 00');
   await page.click('#booking-form button[type="submit"]');

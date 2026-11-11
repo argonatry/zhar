@@ -345,6 +345,88 @@
   padding: 0.25rem 0.5rem;
   justify-self: start;
 }
+/* Свои выпадающие списки (время, гости). Разметку строит js/select.js */
+.field--select { position: relative; }
+.select__btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0.5rem 0;
+  border: 0;
+  border-bottom: 2px solid var(--coal);
+  border-radius: 0;
+  background: transparent;
+  color: var(--coal);
+  font-size: 1.1875rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.select__btn::after {
+  content: "";
+  flex: none;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-right: 0.3rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-25%) rotate(45deg);
+  transition: transform 0.5s var(--ease-out);
+}
+.select.is-open .select__btn::after { transform: translateY(25%) rotate(225deg); }
+.select__btn:focus-visible {
+  outline: 0;
+  border-bottom-width: 4px;
+  padding-bottom: calc(0.5rem - 2px);
+}
+
+.select__panel {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5.25rem, 1fr));
+  gap: 2px;
+  padding: 0.5rem;
+  background: var(--coal);
+  color: var(--ash);
+  box-shadow: 0 1.25rem 2.5rem rgb(20 14 11 / 0.35);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-0.5rem);
+  transition: opacity 0.35s var(--ease-out), transform 0.5s var(--ease-out), visibility 0s 0.35s;
+}
+.select.is-open .select__panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity 0.35s var(--ease-out), transform 0.5s var(--ease-out), visibility 0s;
+}
+/* Узкое поле в правой колонке: панель раскрывается на всю ширину формы */
+.field--half.field--select .select__panel {
+  left: auto;
+  width: calc(200% + var(--s-3));
+}
+.select__option {
+  display: grid;
+  place-items: center;
+  min-height: 2.75rem;
+  padding: 0.25rem 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.25s var(--ease-out), color 0.25s var(--ease-out);
+}
+.select__option.is-active { background: var(--soot); color: var(--flame); }
+.select__option[aria-selected="true"] { background: var(--zhar); color: var(--coal); }
+
 .form .btn { grid-column: 1 / -1; margin-top: var(--s-2); }
 .form__note { grid-column: 1 / -1; color: var(--muted); }
 
